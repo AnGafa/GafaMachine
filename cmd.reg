@@ -1,0 +1,15 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\directory\background\shell\nodejs]
+"Icon"="cmd.exe"
+@="&Node.js here"
+
+[HKEY_CLASSES_ROOT\directory\background\shell\nodejs\command]
+@="cmd.exe /s /k pushd \"%V\" & nodevars.bat"
+
+[HKEY_CLASSES_ROOT\directory\shell\nodejs]
+@="&Node.js here"
+"Icon"="cmd.exe"
+
+[HKEY_CLASSES_ROOT\directory\shell\nodejs\command]
+@="cmd.exe /s /k pushd \"%V\" & nodevars.bat"
