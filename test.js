@@ -1,6 +1,12 @@
-models
+var a = [];
 
-function models(model1)
+a = models();
+
+console.log(a);
+
+function models()
 {
-    var model1 = "hundai";
+    const model1 = ["1", "2", "3"];
+
+    return model1;
 }

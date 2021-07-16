@@ -26,72 +26,145 @@ client.on('message', async message => {
 		message.channel.send('Andrea Gafa');
 	}
 
-	if (command === 'movies'){
-		
-		fs.readFile("movielist.txt", "utf8", async function(err, contents){
+	if (command === 'movies')
+	{
+		if(args[0] === "horror")
+		{
+			var movielist = [];
+			movielist = readjsonfile();
+			//console.log(movielist.movies.categories.horror);
+
 			await message.channel.send({embed: {
 				color: '#D733FF',
-				title: 'movie list',
-				description: contents
+				title: 'Horror movie list',
+				description: movielist.movies.categories.horror.join("\n")
 			  }})
 				.then(msg => {
 					setTimeout(() => msg.delete(), 300000)
 				})
 				.catch(/*Your Error handling if the Message isn't returned, sent, etc.*/);
-		});	
+
+		}else if(args[0] === "comedy")
+		{
+
+			var movielist = [];
+			movielist = readjsonfile();
+
+			await message.channel.send({embed: {
+				color: '#D733FF',
+				title: 'Comedy movie list',
+				description: movielist.movies.categories.comedy.join("\n")
+			  }})
+				.then(msg => {
+					setTimeout(() => msg.delete(), 300000)
+				})
+				.catch(/*Your Error handling if the Message isn't returned, sent, etc.*/);
+
+		}else if(args[0] === "action")
+		{
+			var movielist = [];
+			movielist = readjsonfile();
+
+			await message.channel.send({embed: {
+				color: '#D733FF',
+				title: 'Action movie list',
+				description: movielist.movies.categories.action.join("\n")
+			  }})
+				.then(msg => {
+					setTimeout(() => msg.delete(), 300000)
+				})
+				.catch(/*Your Error handling if the Message isn't returned, sent, etc.*/);
+
+		}else if(args[0] === undefined)
+		{		
+			var movielist = [];
+			movielist = readjsonfile();
+
+			await message.channel.send({embed: {
+				color: '#D733FF',
+				title: 'Movie list',
+				description: movielist.movies.categories.horror.join("\n") + "\n" + movielist.movies.categories.comedy.join("\n") + "\n" + movielist.movies.categories.action.join("\n")
+			  }})
+				.then(msg => {
+					setTimeout(() => msg.delete(), 300000)
+				})
+				.catch(/*Your Error handling if the Message isn't returned, sent, etc.*/);
+
+		}else if(args[0] === "seen")
+		{
+			var movielist = [];
+			movielist = readjsonfile();
+
+			await message.channel.send({embed: {
+				color: '#D733FF',
+				title: 'Seen movies list',
+				description: movielist.seen.join("\n")
+			  }})
+				.then(msg => {
+					setTimeout(() => msg.delete(), 300000)
+				})
+				.catch(/*Your Error handling if the Message isn't returned, sent, etc.*/);
+		}
+
+
+		// fs.readFile("movielist.txt", "utf8", async function(err, contents){
+		// 	await message.channel.send({embed: {
+		// 		color: '#D733FF',
+		// 		title: 'movie list',
+		// 		description: contents
+		// 	  }})
+		// 		.then(msg => {
+		// 			setTimeout(() => msg.delete(), 300000)
+		// 		})
+		// 		.catch(/*Your Error handling if the Message isn't returned, sent, etc.*/);
+		// });	
 
 		//openFileAsync();
 		//await message.channel.send(contents);
 	}
 
 	if(command === 'test'){
-		readjsonfile(movieArrays);
 		
-		for(var i = 0; i < horrorArray.length; i++)
-		{
-			console.log(horrorArray[i]);
-		}
+		var movies = [];
+		movies = readjsonfile();
+
+		console.log("3");
+		console.log(movies);
 	}
 })
 
-async function readjsonfile(horrorArray, comedyArray, actionArray)
+function readjsonfile()
 {
-	const fs = require('fs')
-	var horrorArray = [];
-	var comedyArray = [];
-	var actionArray = [];
+	const fs = require('fs');
+	const path = require('path');
 
-	fs.readFile(moviefile, 'utf8', (err, jsonString) => {
-		if (err) {
-			console.log("File read failed:", err)
-			return
-		}
-		try {
-			const movies = JSON.parse(jsonString)
-
-			for ( var i = 0; i < movies.movies.categories.horror.length; i++ ) {
-				if ( typeof movies.movies.categories.horror[i] == "string" ) {
-					horrorArray.push(movies.movies.categories.horror[i]);
-				}
-			}
-
-			for ( var i = 0; i < movies.movies.categories.comedy.length; i++ ) {
-				if ( typeof movies.movies.categories.comedy[i] == "string" ) {
-					comedyArray.push(movies.movies.categories.comedy[i]);
-				}
-			}
-
-			for ( var i = 0; i < movies.movies.categories.action.length; i++ ) {
-				if ( typeof movies.movies.categories.action[i] == "string" ) {
-					actionArray.push(movies.movies.categories.action[i]);
-				}
-			}
-		}
-		catch(err) {
-				console.log('Error parsing JSON string:', err)
-		}
-	})
-	return horrorArray, comedyArray, actionArray;
+	let rawdata = fs.readFileSync(path.resolve(__dirname, 'movies.json'));
+	let movielist = JSON.parse(rawdata);
+	return movielist;
 }
+
+// async function readjsonfile()
+// {
+// 	const fs = require('fs')
+// 	console.log("1");
+	
+// 	var movies = [];
+
+// 	movies = await(
+// 	fs.readFile(moviefile, 'utf8', (err, jsonString) => {
+// 		if (err) {
+// 			console.log("File read failed:", err)
+// 			return
+// 		}
+// 		try {
+// 			console.log("2");
+// 			var movies = JSON.parse(jsonString);
+// 		}
+// 		catch(err) {
+// 				console.log('Error parsing JSON string:', err)
+// 		}
+// 		return movies;
+// 	}))
+// }
 
 client.login(token);
