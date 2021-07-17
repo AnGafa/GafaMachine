@@ -1,10 +1,7 @@
 {
-    "movies":
-    {
-        "categories":
-        {
-            "horror":
-            [
+    "movies": {
+        "categories": {
+            "horror": [
                 "hannibal",
                 "se7en",
                 "6th sense",
@@ -18,23 +15,23 @@
                 "GET OUT",
                 "red dragon",
                 "the game",
-                "jigsaw"
+                "jigsaw",
+                "horror"
             ],
-            "comedy":
-            [
+            "comedy": [
                 "PAUL BLART MALL COP",
                 "true memoirs of an international killer",
-                "21 jump street"
+                "21 jump street",
+                "comedy"
             ],
-            "action":
-            [
+            "action": [
                 "equalizer",
-                "zombieland"
+                "zombieland",
+                "action"
             ]
         }
     },
-    "seen":
-    [
+    "seen": [
         "I see you",
         "the visit",
         "the apostle"

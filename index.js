@@ -37,7 +37,12 @@ client.on('message', async message => {
 			await message.channel.send({embed: {
 				color: '#D733FF',
 				title: 'Horror movie list',
-				description: movielist.movies.categories.horror.join("\n")
+				description: movielist.movies.categories.horror.join("\n"),
+				timestamp: new Date(),
+				footer: {
+					icon_url: client.user.displayAvatarURL(),
+					text: 'Andrea Gafa'
+				}
 			  }})
 				.then(msg => {
 					setTimeout(() => msg.delete(), 300000)
@@ -53,7 +58,12 @@ client.on('message', async message => {
 			await message.channel.send({embed: {
 				color: '#D733FF',
 				title: 'Comedy movie list',
-				description: movielist.movies.categories.comedy.join("\n")
+				description: movielist.movies.categories.comedy.join("\n"),
+				timestamp: new Date(),
+				footer: {
+					icon_url: client.user.displayAvatarURL(),
+					text: 'Andrea Gafa'
+				}
 			  }})
 				.then(msg => {
 					setTimeout(() => msg.delete(), 300000)
@@ -68,7 +78,12 @@ client.on('message', async message => {
 			await message.channel.send({embed: {
 				color: '#D733FF',
 				title: 'Action movie list',
-				description: movielist.movies.categories.action.join("\n")
+				description: movielist.movies.categories.action.join("\n"),
+				timestamp: new Date(),
+				footer: {
+					icon_url: client.user.displayAvatarURL(),
+					text: 'Andrea Gafa'
+				}
 			  }})
 				.then(msg => {
 					setTimeout(() => msg.delete(), 300000)
@@ -83,7 +98,12 @@ client.on('message', async message => {
 			await message.channel.send({embed: {
 				color: '#D733FF',
 				title: 'Movie list',
-				description: movielist.movies.categories.horror.join("\n") + "\n" + movielist.movies.categories.comedy.join("\n") + "\n" + movielist.movies.categories.action.join("\n")
+				description: movielist.movies.categories.horror.join("\n") + "\n" + movielist.movies.categories.comedy.join("\n") + "\n" + movielist.movies.categories.action.join("\n"),
+				timestamp: new Date(),
+				footer: {
+					icon_url: client.user.displayAvatarURL(),
+					text: 'Andrea Gafa'
+				}
 			  }})
 				.then(msg => {
 					setTimeout(() => msg.delete(), 300000)
@@ -98,12 +118,29 @@ client.on('message', async message => {
 			await message.channel.send({embed: {
 				color: '#D733FF',
 				title: 'Seen movies list',
-				description: movielist.seen.join("\n")
+				description: movielist.seen.join("\n"),
+				timestamp: new Date(),
+				footer: {
+					icon_url: client.user.displayAvatarURL(),
+					text: 'Andrea Gafa'
+				}
 			  }})
 				.then(msg => {
 					setTimeout(() => msg.delete(), 300000)
 				})
 				.catch(/*Your Error handling if the Message isn't returned, sent, etc.*/);
+		}else if(args[0] === "add")
+		{
+			if(args[1] === "horror")
+			{
+				writejsonfile("horror", args[2]);
+			}else if(args[1] === "comedy")
+			{
+				writejsonfile("comedy", args[2]);
+			}else if(args[1] === 'action')
+			{
+				writejsonfile("action", args[2]);
+			}
 		}
 
 
@@ -125,11 +162,7 @@ client.on('message', async message => {
 
 	if(command === 'test'){
 		
-		var movies = [];
-		movies = readjsonfile();
-
-		console.log("3");
-		console.log(movies);
+		writejsonfile();
 	}
 })
 
@@ -141,6 +174,25 @@ function readjsonfile()
 	let rawdata = fs.readFileSync(path.resolve(__dirname, 'movies.json'));
 	let movielist = JSON.parse(rawdata);
 	return movielist;
+}
+
+function writejsonfile(category, movie)
+{
+	var fs = require('fs');
+	var obj = {movies: {categories: {horror:[],comedy:[],action:[]}}};
+
+	fs.readFile('movies.json', 'utf8', function readFileCallback(err, data){
+		if (err){
+			console.log(err);
+		} else {
+		obj = JSON.parse(data); //now it an object
+		obj.movies.categories[category].push(movie); //add some data
+		json = JSON.stringify(obj); //convert it back to json
+		fs.writeFile('movies.json', json, (err) => {
+			if (err) throw err;
+			console.log('movie file overwritten');
+		  });
+	}});
 }
 
 // async function readjsonfile()
