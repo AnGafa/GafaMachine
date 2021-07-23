@@ -8,9 +8,6 @@ var fs = require('fs');
 var moviefile = "./movies.json"
 
 const embed = new Discord.MessageEmbed()
-	.setColor('#2ECC71')
-	.setTitle('some title')
-	.setDescription('some description')
 
 client.once('ready', () => {
 	console.log('Ready!');
@@ -30,105 +27,90 @@ client.on('message', async message => {
 	{
 		if(args[0] === "horror")
 		{
-			var movielist = [];
-			movielist = readjsonfile();
-			//console.log(movielist.movies.categories.horror);
+			var parselist = [];
+			parselist = readjsonfile();
+			
+			let data = parselist.movies.categories.horror;
+			var movielist ="";
 
-			await message.channel.send({embed: {
-				color: '#D733FF',
-				title: 'Horror movie list',
-				description: movielist.movies.categories.horror.join("\n"),
-				timestamp: new Date(),
-				footer: {
-					icon_url: client.user.displayAvatarURL(),
-					text: 'Andrea Gafa'
-				}
-			  }})
-				.then(msg => {
-					setTimeout(() => msg.delete(), 300000)
-				})
-				.catch(/*Your Error handling if the Message isn't returned, sent, etc.*/);
+			for(i=0; i<data.length; i++)
+			{
+				movielist = movielist.concat(data[i].id,".\t", data[i].name, "\n");
+			}
 
+			embedmsg("horror", movielist, message);
 		}else if(args[0] === "comedy")
 		{
+			var parselist = [];
+			parselist = readjsonfile();
+			
+			let data = parselist.movies.categories.comedy;
+			var movielist ="";
 
-			var movielist = [];
-			movielist = readjsonfile();
+			for(i=0; i<data.length; i++)
+			{
+				movielist = movielist.concat(data[i].id,".\t", data[i].name, "\n");
+			}
 
-			await message.channel.send({embed: {
-				color: '#D733FF',
-				title: 'Comedy movie list',
-				description: movielist.movies.categories.comedy.join("\n"),
-				timestamp: new Date(),
-				footer: {
-					icon_url: client.user.displayAvatarURL(),
-					text: 'Andrea Gafa'
-				}
-			  }})
-				.then(msg => {
-					setTimeout(() => msg.delete(), 300000)
-				})
-				.catch(/*Your Error handling if the Message isn't returned, sent, etc.*/);
+			embedmsg("comedy", movielist, message);
 
 		}else if(args[0] === "action")
 		{
-			var movielist = [];
-			movielist = readjsonfile();
+			var parselist = [];
+			parselist = readjsonfile();
+			
+			let data = parselist.movies.categories.action;
+			var movielist ="";
 
-			await message.channel.send({embed: {
-				color: '#D733FF',
-				title: 'Action movie list',
-				description: movielist.movies.categories.action.join("\n"),
-				timestamp: new Date(),
-				footer: {
-					icon_url: client.user.displayAvatarURL(),
-					text: 'Andrea Gafa'
-				}
-			  }})
-				.then(msg => {
-					setTimeout(() => msg.delete(), 300000)
-				})
-				.catch(/*Your Error handling if the Message isn't returned, sent, etc.*/);
+			for(i=0; i<data.length; i++)
+			{
+				movielist = movielist.concat(data[i].id,".\t", data[i].name, "\n");
+			}
+
+			embedmsg("action", movielist, message);
 
 		}else if(args[0] === undefined)
 		{		
-			var movielist = [];
-			movielist = readjsonfile();
+			var parselist = [];
+			parselist = readjsonfile();
+			
+			var movielist ="";
+			
+			movielist = movielist.concat("--HORROR/THRILLER-- \n");
+			for(i=0; i<parselist.movies.categories.horror.length; i++)
+			{
+				movielist = movielist.concat(parselist.movies.categories.horror[i].id,".\t", parselist.movies.categories.horror[i].name, "\n");
+			}
+			
+			movielist = movielist.concat("\n--COMEDY-- \n");
+			for(i=0; i<parselist.movies.categories.comedy.length; i++)
+			{
+				movielist = movielist.concat(parselist.movies.categories.comedy[i].id,".\t", parselist.movies.categories.comedy[i].name, "\n");
+			}
+			
+			movielist = movielist.concat("\n--ACTION-- \n");
+			for(i=0; i<parselist.movies.categories.action.length; i++)
+			{
+				movielist = movielist.concat(parselist.movies.categories.action[i].id,".\t", parselist.movies.categories.action[i].name, "\n");
+			}
 
-			await message.channel.send({embed: {
-				color: '#D733FF',
-				title: 'Movie list',
-				description: movielist.movies.categories.horror.join("\n") + "\n" + movielist.movies.categories.comedy.join("\n") + "\n" + movielist.movies.categories.action.join("\n"),
-				timestamp: new Date(),
-				footer: {
-					icon_url: client.user.displayAvatarURL(),
-					text: 'Andrea Gafa'
-				}
-			  }})
-				.then(msg => {
-					setTimeout(() => msg.delete(), 300000)
-				})
-				.catch(/*Your Error handling if the Message isn't returned, sent, etc.*/);
+			embedmsg("", movielist, message);
 
 		}else if(args[0] === "seen")
 		{
-			var movielist = [];
-			movielist = readjsonfile();
+			var parselist = [];
+			parselist = readjsonfile();
+			
+			let data = parselist.seen;
+			var movielist ="";
 
-			await message.channel.send({embed: {
-				color: '#D733FF',
-				title: 'Seen movies list',
-				description: movielist.seen.join("\n"),
-				timestamp: new Date(),
-				footer: {
-					icon_url: client.user.displayAvatarURL(),
-					text: 'Andrea Gafa'
-				}
-			  }})
-				.then(msg => {
-					setTimeout(() => msg.delete(), 300000)
-				})
-				.catch(/*Your Error handling if the Message isn't returned, sent, etc.*/);
+			for(i=0; i<data.length; i++)
+			{
+				movielist = movielist.concat(data[i].id,".\t", data[i].name, "\n");
+			}
+
+			embedmsg("seen", movielist, message);
+			
 		}else if(args[0] === "add")
 		{
 			if(args[1] === "horror")
@@ -196,6 +178,24 @@ function writejsonfile(category, movie)
 			console.log('movie file overwritten');
 		  });
 	}});
+}
+
+function embedmsg(category, movielist, message)
+{
+	message.channel.send({embed: {
+		color: '#D733FF',
+		title: category+' movie list',
+		description: movielist,
+		timestamp: new Date(),
+		footer: {
+			icon_url: client.user.displayAvatarURL(),
+			text: 'Andrea Gafa'
+		}
+	  }})
+		.then(msg => {
+			setTimeout(() => msg.delete(), 300000)
+		})
+		.catch(/*Your Error handling if the Message isn't returned, sent, etc.*/);
 }
 
 client.login(token);
