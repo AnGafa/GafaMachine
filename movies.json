@@ -2,32 +2,122 @@
     "movies": {
         "categories": {
             "horror": [
-                "hannibal",
-                "se7en",
-                "6th sense",
-                "Conjuring",
-                "The ring",
-                "Exorcist",
-                "The Invitation",
-                "Halloween 2018",
-                "Hereditary",
-                "US",
-                "GET OUT",
-                "red dragon",
-                "the game",
-                "jigsaw",
-                "horror"
+                {
+                    "id": 1,
+                    "name": "HANNIBAL"
+                },
+                {
+                    "id": 2,
+                    "name": "SE7EN"
+                },
+                {
+                    "id": 3,
+                    "name": "6TH SENSE"
+                },
+                {
+                    "id": 4,
+                    "name": "THE CONJURING"
+                },
+                {
+                    "id": 5,
+                    "name": "THE RING"
+                },
+                {
+                    "id": 6,
+                    "name": "THE EXORCIST"
+                },
+                {
+                    "id": 7,
+                    "name": "THE INVITATION"
+                },
+                {
+                    "id": 8,
+                    "name": "HALLOWEEN 2018"
+                },
+                {
+                    "id": 9,
+                    "name": "HEREDITARY"
+                },
+                {
+                    "id": 10,
+                    "name": "RED DRAGON"
+                },
+                {
+                    "id": 11,
+                    "name": "THE GAME"
+                },
+                {
+                    "id": 12,
+                    "name": "JIGSAW"
+                },
+                {
+                    "id": 25,
+                    "name": "1922"
+                },
+                {
+                    "id": 26,
+                    "name": "ANNABELLE: CREATION"
+                },
+                {
+                    "id": 27,
+                    "name": "EVIL DEAD"
+                }
             ],
             "comedy": [
-                "PAUL BLART MALL COP",
-                "true memoirs of an international killer",
-                "21 jump street",
-                "comedy"
+                {
+                    "id": 13,
+                    "name": "PAUL BLART MALL COP"
+                },
+                {
+                    "id": 14,
+                    "name": "PAUL BLART MALL COP 2"
+                },
+                {
+                    "id": 15,
+                    "name": "TRUE MEMOIRS OF AN INTERNATIONAL KILLER"
+                },
+                {
+                    "id": 16,
+                    "name": "21 JUMP STREET"
+                },
+                {
+                    "id": 17,
+                    "name": "22 JUMP STREET"
+                },
+                {
+                    "id": 24,
+                    "name": "JOHNNY ENGLISH STRIKES AGAIN"
+                }
             ],
             "action": [
-                "equalizer",
-                "zombieland",
-                "action"
+                {
+                    "id": 18,
+                    "name": "THE EQUILIZER"
+                },
+                {
+                    "id": 19,
+                    "name": "THE EQUALIZER 2"
+                },
+                {
+                    "id": 20,
+                    "name": "ZOMBIELAND"
+                },
+                {
+                    "id": 21,
+                    "name": "ZOMBIELAND 2"
+                },
+                {
+                    "id": 22,
+                    "name": "KINGSMAN: SECRET SERVICE"
+                },
+                {
+                    "id": 23,
+                    "name": "KINGSMAN: GOLDEN CIRCLE"
+                },
+                {
+                    "id": 28,
+                    "name": "CAPTAIN PHILLIPS"
+                }
             ]
         }
     },
@@ -35,5 +125,6 @@
         "I see you",
         "the visit",
         "the apostle"
-    ]
+    ],
+    "id": 29
 }

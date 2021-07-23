@@ -133,13 +133,16 @@ client.on('message', async message => {
 		{
 			if(args[1] === "horror")
 			{
-				writejsonfile("horror", args[2]);
+				writejsonfile("horror", args.slice(2).join(' '));
+				message.react('👍');
 			}else if(args[1] === "comedy")
 			{
-				writejsonfile("comedy", args[2]);
+				writejsonfile("comedy", args.slice(2).join(' '));
+				message.react('👍');
 			}else if(args[1] === 'action')
 			{
-				writejsonfile("action", args[2]);
+				writejsonfile("action", args.slice(2).join(' '));
+				message.react('👍');
 			}
 		}
 
@@ -155,14 +158,12 @@ client.on('message', async message => {
 		// 		})
 		// 		.catch(/*Your Error handling if the Message isn't returned, sent, etc.*/);
 		// });	
-
-		//openFileAsync();
-		//await message.channel.send(contents);
 	}
 
 	if(command === 'test'){
 		
-		writejsonfile();
+		const reason = args.slice(2).join(' ');
+		console.log(reason);
 	}
 })
 
@@ -185,8 +186,10 @@ function writejsonfile(category, movie)
 		if (err){
 			console.log(err);
 		} else {
-		obj = JSON.parse(data); //now it an object
-		obj.movies.categories[category].push(movie); //add some data
+		obj = JSON.parse(data); //now its an object
+		var id = obj.id;
+		obj.movies.categories[category].push({id: id, name: movie.toUpperCase()}); //add some data
+		obj.id = id+1;
 		json = JSON.stringify(obj); //convert it back to json
 		fs.writeFile('movies.json', json, (err) => {
 			if (err) throw err;
@@ -194,29 +197,5 @@ function writejsonfile(category, movie)
 		  });
 	}});
 }
-
-// async function readjsonfile()
-// {
-// 	const fs = require('fs')
-// 	console.log("1");
-	
-// 	var movies = [];
-
-// 	movies = await(
-// 	fs.readFile(moviefile, 'utf8', (err, jsonString) => {
-// 		if (err) {
-// 			console.log("File read failed:", err)
-// 			return
-// 		}
-// 		try {
-// 			console.log("2");
-// 			var movies = JSON.parse(jsonString);
-// 		}
-// 		catch(err) {
-// 				console.log('Error parsing JSON string:', err)
-// 		}
-// 		return movies;
-// 	}))
-// }
 
 client.login(token);
