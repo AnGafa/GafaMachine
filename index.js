@@ -134,9 +134,8 @@ client.on('message', async message => {
 
 			for(i=0; i<data.length; i++)
 			{
-				movielist = movielist.concat(data[i].id,".\t", data[i].name, "\n");
+				movielist = movielist.concat(data[i].name, "\n");
 			}
-
 			embedmsg("seen", movielist, message);
 			
 		}else if(args[0] === "add")
