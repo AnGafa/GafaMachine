@@ -74,27 +74,55 @@ client.on('message', async message => {
 			var parselist = [];
 			parselist = readjsonfile();
 			
-			var movielist ="";
+			var horrorMovielist = "";
+			var comedyMovielist = "";
+			var actionMovielist = "";
 			
-			movielist = movielist.concat("--HORROR/THRILLER-- \n");
 			for(i=0; i<parselist.movies.categories.horror.length; i++)
 			{
-				movielist = movielist.concat(parselist.movies.categories.horror[i].id,".\t", parselist.movies.categories.horror[i].name, "\n");
+				horrorMovielist = horrorMovielist.concat(parselist.movies.categories.horror[i].id,".\t", parselist.movies.categories.horror[i].name, "\n");
 			}
 			
-			movielist = movielist.concat("\n--COMEDY-- \n");
 			for(i=0; i<parselist.movies.categories.comedy.length; i++)
 			{
-				movielist = movielist.concat(parselist.movies.categories.comedy[i].id,".\t", parselist.movies.categories.comedy[i].name, "\n");
+				comedyMovielist = comedyMovielist.concat(parselist.movies.categories.comedy[i].id,".\t", parselist.movies.categories.comedy[i].name, "\n");
 			}
 			
-			movielist = movielist.concat("\n--ACTION-- \n");
 			for(i=0; i<parselist.movies.categories.action.length; i++)
 			{
-				movielist = movielist.concat(parselist.movies.categories.action[i].id,".\t", parselist.movies.categories.action[i].name, "\n");
+				actionMovielist = actionMovielist.concat(parselist.movies.categories.action[i].id,".\t", parselist.movies.categories.action[i].name, "\n");
 			}
 
-			embedmsg("", movielist, message);
+			message.channel.send({embed: {
+				color: '#D733FF',
+				title: 'movie list',
+				fields: [
+					{
+						name: 'HORROR/THRILLER',
+						value: horrorMovielist,
+						inline: true,
+					},
+					{
+						name: 'COMEDY',
+						value: comedyMovielist,
+						inline: true,
+					},
+					{
+						name: 'ACTION',
+						value: actionMovielist,
+						inline: true,
+					},
+				],
+				timestamp: new Date(),
+				footer: {
+					icon_url: client.user.displayAvatarURL(),
+					text: 'Andrea Gafa'
+				}
+			  }})
+				.then(msg => {
+					setTimeout(() => msg.delete(), 300000)
+				})
+				.catch(/*Your Error handling if the Message isn't returned, sent, etc.*/);
 
 		}else if(args[0] === "seen")
 		{
@@ -125,27 +153,37 @@ client.on('message', async message => {
 			{
 				writejsonfile("action", args.slice(2).join(' '));
 				message.react('👍');
+			}else if(args[1] === 'seen')
+			{
+				movetoseen(args[2], message)
+			}
+		}
+	}				//TODO finish seen
+
+	if(command === 'test'){
+		var parsedJSON = [];
+		parsedJSON = readjsonfile();
+
+		horrorfilter = parsedJSON.movies.categories.horror;
+		var seenEntry;
+		
+		console.log(horrorfilter);
+
+		for(var i = 0; i < horrorfilter.length; i++) {
+			if(horrorfilter[i].id == 111) {
+				seenEntry = horrorfilter[i];
+				horrorfilter.splice(i, 1);
+				break;
 			}
 		}
 
+		parsedJSON.seen.push(seenEntry);
 
-		// fs.readFile("movielist.txt", "utf8", async function(err, contents){
-		// 	await message.channel.send({embed: {
-		// 		color: '#D733FF',
-		// 		title: 'movie list',
-		// 		description: contents
-		// 	  }})
-		// 		.then(msg => {
-		// 			setTimeout(() => msg.delete(), 300000)
-		// 		})
-		// 		.catch(/*Your Error handling if the Message isn't returned, sent, etc.*/);
-		// });	
-	}
-
-	if(command === 'test'){
-		
-		const reason = args.slice(2).join(' ');
-		console.log(reason);
+		json = JSON.stringify(parsedJSON); //convert it back to json
+		fs.writeFile('movies.json', json, (err) => {
+			if (err) throw err;
+			console.log('movie file overwritten');
+		  });
 	}
 })
 
@@ -196,6 +234,56 @@ function embedmsg(category, movielist, message)
 			setTimeout(() => msg.delete(), 300000)
 		})
 		.catch(/*Your Error handling if the Message isn't returned, sent, etc.*/);
+}
+
+function movetoseen(id, message)
+{
+	var parsedJSON = [];
+	parsedJSON = readjsonfile();
+
+	horrorfilter = parsedJSON.movies.categories.horror;
+	comedyfilter = parsedJSON.movies.categories.comedy;
+	actionfilter = parsedJSON.movies.categories.action;
+	var seenEntry;
+
+	for(var i = 0; i < horrorfilter.length; i++) {
+		if(horrorfilter[i].id == id) {
+			seenEntry = horrorfilter[i];
+			horrorfilter.splice(i, 1);
+			break;
+		}
+	}
+	if (seenEntry == null){
+		for(var i = 0; i < comedyfilter.length; i++) {
+			if(comedyfilter[i].id == id) {
+				seenEntry = comedyfilter[i];
+				comedyfilter.splice(i, 1);
+				break;
+			}
+		}
+	}
+	if (seenEntry == null){
+		for(var i = 0; i < actionfilter.length; i++) {
+			if(actionfilter[i].id == id) {
+				seenEntry = actionfilter[i];
+				actionfilter.splice(i, 1);
+				break;
+			}
+		}
+	}
+	if (seenEntry == null)
+	{
+		message.react('👎');
+	}else{
+		parsedJSON.seen.push(seenEntry);
+		json = JSON.stringify(parsedJSON); //convert it back to json
+		fs.writeFile('movies.json', json, (err) => {
+			if (err) throw err;
+			console.log('movie file overwritten');
+			});
+
+		message.react('👍');
+	}
 }
 
 client.login(token);
