@@ -11,6 +11,7 @@ const embed = new Discord.MessageEmbed()
 
 client.once('ready', () => {
 	console.log('Ready!');
+	client.user.setActivity("!movies commands"); 
 });
 
 client.on('message', async message => {
@@ -156,6 +157,22 @@ client.on('message', async message => {
 			{
 				movetoseen(args[2], message)
 			}
+		}else if((args[0] === "commands") || (args[0] === "cmd"))
+		{
+			message.channel.send({embed: {
+				color: '#D733FF',
+				title: 'commands list',
+				description: '!movies\n!movies [category]\n!movies seen\n!movies add [category] [movie name]\n !movies add seen [movie id]',
+				timestamp: new Date(),
+				footer: {
+					icon_url: client.user.displayAvatarURL(),
+					text: 'Andrea Gafa'
+				}
+			  }})
+				.then(msg => {
+					setTimeout(() => msg.delete(), 300000)
+				})
+				.catch(/*Your Error handling if the Message isn't returned, sent, etc.*/);
 		}
 	}				//TODO finish seen
 
