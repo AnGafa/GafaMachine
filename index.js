@@ -162,7 +162,7 @@ client.on('message', async message => {
 			message.channel.send({embed: {
 				color: '#D733FF',
 				title: 'commands list',
-				description: '!movies\n!movies [category]\n!movies seen\n!movies add [category] [movie name]\n !movies add seen [movie id]',
+				description: '!movies\n!movies [category]\n!movies seen\n!movies add [category] [movie name]\n!movies add seen [movie id]',
 				timestamp: new Date(),
 				footer: {
 					icon_url: client.user.displayAvatarURL(),
@@ -174,32 +174,10 @@ client.on('message', async message => {
 				})
 				.catch(/*Your Error handling if the Message isn't returned, sent, etc.*/);
 		}
-	}				//TODO finish seen
+	}
 
 	if(command === 'test'){
-		var parsedJSON = [];
-		parsedJSON = readjsonfile();
-
-		horrorfilter = parsedJSON.movies.categories.horror;
-		var seenEntry;
-		
-		console.log(horrorfilter);
-
-		for(var i = 0; i < horrorfilter.length; i++) {
-			if(horrorfilter[i].id == 111) {
-				seenEntry = horrorfilter[i];
-				horrorfilter.splice(i, 1);
-				break;
-			}
-		}
-
-		parsedJSON.seen.push(seenEntry);
-
-		json = JSON.stringify(parsedJSON); //convert it back to json
-		fs.writeFile('movies.json', json, (err) => {
-			if (err) throw err;
-			console.log('movie file overwritten');
-		  });
+	
 	}
 })
 
