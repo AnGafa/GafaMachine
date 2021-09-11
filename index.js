@@ -4,7 +4,7 @@ const client = new Discord.Client();
 
 // Import node js fs module.
 var fs = require('fs');
-
+const httpsRequest = require("./httpsRequest")
 var moviefile = "./movies.json"
 
 const embed = new Discord.MessageEmbed()
@@ -173,13 +173,128 @@ client.on('message', async message => {
 					setTimeout(() => msg.delete(), 300000)
 				})
 				.catch(/*Your Error handling if the Message isn't returned, sent, etc.*/);
+		}else if(args[0] === "check")
+		{
+			let movies = await httpsRequest.mainGetMovieData(args.slice(1).join(' '));
+
+			movieChoiceEmbed(movies, message, channel, messages);
 		}
 	}
 
 	if(command === 'test'){
-	
+		
 	}
 })
+
+async function movieChoiceEmbed(movies, message, channel, messages)
+{
+	message.channel.send({embed: {
+		color: '#D733FF',
+		title: 'Choose movie',
+		fields: [
+			{
+				name: movies[1].title,
+				value: movies[1].description,
+				inline: true,
+			},
+			{
+				name: movies[2].title,
+				value: movies[2].description,
+				inline: true,
+			},
+			{
+				name: '\u200b',
+				value: '\u200b',
+				inline: false,
+			},
+			{
+				name: movies[3].title,
+				value: movies[3].description,
+				inline: true,
+			},
+			{
+				name: movies[4].title,
+				value: movies[4].description,
+				inline: true,
+			},
+		],
+		timestamp: new Date(),
+		footer: {
+			icon_url: client.user.displayAvatarURL(),
+			text: 'Andrea Gafa'
+		}
+	  }})
+		.then(sentEmbed => {
+			sentEmbed.react("⏪");
+			sentEmbed.react("⏩");
+		})
+		.catch(/*Your Error handling if the Message isn't returned, sent, etc.*/);
+
+
+	let sent = await message.reply({embed: {
+		color: '#D733FF',
+		title: 'Choose movie',
+		fields: [
+			{
+				name: movies[1].title,
+				value: movies[1].description,
+				inline: true,
+			},
+			{
+				name: movies[2].title,
+				value: movies[2].description,
+				inline: true,
+			},
+			{
+				name: '\u200b',
+				value: '\u200b',
+				inline: false,
+			},
+			{
+				name: movies[3].title,
+				value: movies[3].description,
+				inline: true,
+			},
+			{
+				name: movies[4].title,
+				value: movies[4].description,
+				inline: true,
+			},
+		],
+		timestamp: new Date(),
+		footer: {
+			icon_url: client.user.displayAvatarURL(),
+			text: 'Andrea Gafa'
+		}
+	  }}); 
+	let id = sent.id;
+	console.log(id);
+	
+	channel.messages.fetch(id)
+		.then(message.edit("aaa"))
+		.catch(console.error);
+
+	client.on("messageReactionAdd", (reaction, user) => { // When a reaction is added
+		if(user.bot) return; 
+
+		if(reaction.emoji.name !== "⏪")
+		{
+			message.edit({embed: {
+				color: '#D733FF',
+				title: 'Choose movie',
+				timestamp: new Date(),
+				footer: {
+					icon_url: client.user.displayAvatarURL(),
+					text: 'Andrea Gafa'
+				}
+			  }})
+		}else if(reaction.emoji.name !== "⏩")
+		{
+
+		}
+		return;
+	});
+}
 
 function readjsonfile()
 {
