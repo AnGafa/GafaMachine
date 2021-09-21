@@ -162,7 +162,7 @@ client.on('message', async message => {
 			message.channel.send({embed: {
 				color: '#D733FF',
 				title: 'commands list',
-				description: '!movies\n!movies [category]\n!movies seen\n!movies add [category] [movie name]\n!movies add seen [movie id]',
+				description: '!movies\n!movies [category]\n!movies seen\n!movies add [category] [movie name]\n !movies add seen [movie id]',
 				timestamp: new Date(),
 				footer: {
 					icon_url: client.user.displayAvatarURL(),
@@ -177,29 +177,41 @@ client.on('message', async message => {
 		{
 			let movies = await httpsRequest.mainGetMovieData(args.slice(1).join(' '));
 
-			movieChoiceEmbed(movies, message, channel, messages);
-		}
-	}
+			let count = 0;
+			if(movies.length % 4 !== 0)
+			{
+				i = movies.length+1;
+				b = {title:null , description: null};
 
-	if(command === 'test'){
-		
+				while(movies.length % 4 !== 0)
+				{
+					movies.push(b)
+					i++;
+				}
+			}
+			console.log(movies);
+
+			movieChoiceEmbed(movies, message, count);
+		}
 	}
 })
 
-async function movieChoiceEmbed(movies, message, channel, messages)
+async function movieChoiceEmbed(movies, message, count)
 {
+	pagecount = count;
+
 	message.channel.send({embed: {
 		color: '#D733FF',
 		title: 'Choose movie',
 		fields: [
 			{
-				name: movies[1].title,
-				value: movies[1].description,
+				name: movies[pagecount].title,
+				value: movies[pagecount].description,
 				inline: true,
 			},
 			{
-				name: movies[2].title,
-				value: movies[2].description,
+				name: movies[pagecount+1].title,
+				value: movies[pagecount+1].description,
 				inline: true,
 			},
 			{
@@ -208,13 +220,13 @@ async function movieChoiceEmbed(movies, message, channel, messages)
 				inline: false,
 			},
 			{
-				name: movies[3].title,
-				value: movies[3].description,
+				name: movies[pagecount+2].title,
+				value: movies[pagecount+2].description,
 				inline: true,
 			},
 			{
-				name: movies[4].title,
-				value: movies[4].description,
+				name: movies[pagecount+3].title,
+				value: movies[pagecount+3].description,
 				inline: true,
 			},
 		],
@@ -228,69 +240,21 @@ async function movieChoiceEmbed(movies, message, channel, messages)
 			sentEmbed.react("⏪");
 			sentEmbed.react("⏩");
 		})
-		.catch(/*Your Error handling if the Message isn't returned, sent, etc.*/);
-
-
-	let sent = await message.reply({embed: {
-		color: '#D733FF',
-		title: 'Choose movie',
-		fields: [
-			{
-				name: movies[1].title,
-				value: movies[1].description,
-				inline: true,
-			},
-			{
-				name: movies[2].title,
-				value: movies[2].description,
-				inline: true,
-			},
-			{
-				name: '\u200b',
-				value: '\u200b',
-				inline: false,
-			},
-			{
-				name: movies[3].title,
-				value: movies[3].description,
-				inline: true,
-			},
-			{
-				name: movies[4].title,
-				value: movies[4].description,
-				inline: true,
-			},
-		],
-		timestamp: new Date(),
-		footer: {
-			icon_url: client.user.displayAvatarURL(),
-			text: 'Andrea Gafa'
-		}
-	  }}); 
-	let id = sent.id;
-	console.log(id);
-	
-	channel.messages.fetch(id)
-		.then(message.edit("aaa"))
-		.catch(console.error);
+		.catch();
 
 	client.on("messageReactionAdd", (reaction, user) => { // When a reaction is added
 		if(user.bot) return; 
 
 		if(reaction.emoji.name !== "⏪")
 		{
-			message.edit({embed: {
-				color: '#D733FF',
-				title: 'Choose movie',
-				timestamp: new Date(),
-				footer: {
-					icon_url: client.user.displayAvatarURL(),
-					text: 'Andrea Gafa'
-				}
-			  }})
+			message.channel.lastMessage.delete();
+			count += 4;
+			movieChoiceEmbed(movies, message, count);
 		}else if(reaction.emoji.name !== "⏩")
 		{
-
+			message.channel.lastMessage.delete();
+			count -= 4;
+			movieChoiceEmbed(movies, message, count);
 		}
 		return;
 	});
