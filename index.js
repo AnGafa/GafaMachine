@@ -189,14 +189,12 @@ client.on('message', async message => {
 					i++;
 				}
 			}
-			console.log(movies);
-
 			movieChoiceEmbed(movies, message, count);
 		}
 	}
 })
 
-async function movieChoiceEmbed(movies, message, count)
+function movieChoiceEmbed(movies, message, count)
 {
 	pagecount = count;
 
@@ -242,18 +240,18 @@ async function movieChoiceEmbed(movies, message, count)
 		})
 		.catch();
 
-	client.on("messageReactionAdd", (reaction, user) => { // When a reaction is added
+	client.on("messageReactionAdd", async (reaction, user) => { // When a reaction is added
 		if(user.bot) return; 
 
-		if(reaction.emoji.name !== "⏪")
+		if(reaction.emoji.name == "⏪")
 		{
-			message.channel.lastMessage.delete();
-			count += 4;
-			movieChoiceEmbed(movies, message, count);
-		}else if(reaction.emoji.name !== "⏩")
-		{
-			message.channel.lastMessage.delete();
+			await reaction.message.delete();
 			count -= 4;
+			movieChoiceEmbed(movies, message, count);
+		}else if(reaction.emoji.name == "⏩")
+		{
+			await reaction.message.delete();
+			count += 4;
 			movieChoiceEmbed(movies, message, count);
 		}
 		return;
