@@ -189,6 +189,7 @@ client.on('message', async message => {
 					i++;
 				}
 			}
+
 			movieChoiceEmbed(movies, message, count);
 		}
 	}
@@ -245,13 +246,23 @@ function movieChoiceEmbed(movies, message, count)
 
 		if(reaction.emoji.name == "⏪")
 		{
-			await reaction.message.delete();
-			count -= 4;
+			await reaction.message.delete()
+				.then()
+				.catch(err => { console.error(err); });
+			if(count>4)
+			{
+				count -= 4;
+			}
 			movieChoiceEmbed(movies, message, count);
 		}else if(reaction.emoji.name == "⏩")
 		{
-			await reaction.message.delete();
-			count += 4;
+			await reaction.message.delete()
+				.then()
+				.catch(err => { console.error(err); });
+			if(count<movies.length)
+			{
+				count += 4;
+			}
 			movieChoiceEmbed(movies, message, count);
 		}
 		return;
