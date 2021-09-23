@@ -141,8 +141,13 @@ client.on('messageCreate', async message => {
 		} else if ((args[0] === "commands") || (args[0] === "cmd")) {
 			let embed = new MessageEmbed()
 				.setColor('#D733FF')
-				.setTitle("commands list")
-				.setDescription("!movies\n!movies [category]\n!movies seen\n!movies add [category] [movie name]\n !movies add seen [movie id]")
+				.setTitle("commands list", "----")
+				.addField("!movies", "----")
+				.addField("!movies [category]", "----")
+				.addField("!movies seen", "----")
+				.addField("!movies add [category] [movie name]", "----")
+				.addField("!movies add seen [movie id]", "----")
+				.addField("!movies check [movie title]", "----")
 				.setTimestamp(new Date())
 				.setFooter(text = "By Andrea Gafa'")
 
@@ -153,72 +158,80 @@ client.on('messageCreate', async message => {
 				.catch(/*Your Error handling if the Message isn't returned, sent, etc.*/);
 		} else if (args[0] === "check") {
 			let movies = await httpsRequest.mainGetMovieData(args.slice(1).join(' '));
-
-			let count = 0;
-			if (movies.length % 4 !== 0) {
-				i = movies.length + 1;
-				b = { title: "N/A", description: "N/A" };
-
-				while (movies.length % 4 !== 0) {
-					movies.push(b)
-					i++;
-				}
-			}
-			movieChoiceEmbed(movies, message, count);
-
-			client.on("messageReactionAdd", async (reaction, user) => { // When a reaction is added
-				if (user.bot) return;
-		
-				if (reaction.emoji.name == "⏪") {
-					await reaction.message.delete()
-						.then()
-						.catch(err => { console.error(err); });
-					if (count >= 4) {
-						count -= 4;
-					}
-					movieChoiceEmbed(movies, message, count);
-				} else if (reaction.emoji.name == "⏩") {
-					await reaction.message.delete()
-						.then()
-						.catch(err => { console.error(err); });
-					if (count < (movies.length-4)) {
-						count += 4;
-					}
-					movieChoiceEmbed(movies, message, count);
-				}else if (reaction.emoji.name == "❌") {
-					await reaction.message.delete()
-						.then()
-						.catch(err => { console.error(err); });
-					return;
-				}else if (reaction.emoji.name == "1️⃣") {
-					await reaction.message.delete()
-						.then()
-						.catch(err => { console.error(err); });
-					let selectedInfo = movies[count];
-					selectedMovieEmbed(selectedInfo, message)
-				}else if (reaction.emoji.name == "2️⃣") {
-					await reaction.message.delete()
-						.then()
-						.catch(err => { console.error(err); });
-					let selectedInfo = movies[count+1];
-					selectedMovieEmbed(selectedInfo, message)
-				}else if (reaction.emoji.name == "3️⃣") {
-					await reaction.message.delete()
-						.then()
-						.catch(err => { console.error(err); });
-					
-					let selectedInfo = movies[count+2];
-					selectedMovieEmbed(selectedInfo, message)
-				}else if (reaction.emoji.name == "4️⃣") {
-					await reaction.message.delete()
-						.then()
-						.catch(err => { console.error(err); });
-					
-					let selectedInfo = movies[count+3];
-					selectedMovieEmbed(selectedInfo, message)
-				}
+			if (movies == "")
+			{
+				message.channel.send("No results found")
+					.then(msg => {
+						setTimeout(() => msg.delete(), 100000)
+					})
 				return;
-			});
+			}else{
+				let count = 0;
+				if (movies.length % 4 !== 0) {
+					i = movies.length + 1;
+					b = { title: "N/A", description: "N/A" };
+	
+					while (movies.length % 4 !== 0) {
+						movies.push(b)
+						i++;
+					}
+				}
+				movieChoiceEmbed(movies, message, count);
+			
+				client.on("messageReactionAdd", async (reaction, user) => { // When a reaction is added
+					if (user.bot) return;
+			
+					if (reaction.emoji.name == "⏪") {
+						await reaction.message.delete()
+							.then()
+							.catch(err => { console.error(err); });
+						if (count >= 4) {
+							count -= 4;
+						}
+						movieChoiceEmbed(movies, message, count);
+					} else if (reaction.emoji.name == "⏩") {
+						await reaction.message.delete()
+							.then()
+							.catch(err => { console.error(err); });
+						if (count < (movies.length-4)) {
+							count += 4;
+						}
+						movieChoiceEmbed(movies, message, count);
+					}else if (reaction.emoji.name == "❌") {
+						await reaction.message.delete()
+							.then()
+							.catch(err => { console.error(err); });
+						return;
+					}else if (reaction.emoji.name == "1️⃣") {
+						await reaction.message.delete()
+							.then()
+							.catch(err => { console.error(err); });
+						let selectedInfo = movies[count];
+						selectedMovieEmbed(selectedInfo, message)
+					}else if (reaction.emoji.name == "2️⃣") {
+						await reaction.message.delete()
+							.then()
+							.catch(err => { console.error(err); });
+						let selectedInfo = movies[count+1];
+						selectedMovieEmbed(selectedInfo, message)
+					}else if (reaction.emoji.name == "3️⃣") {
+						await reaction.message.delete()
+							.then()
+							.catch(err => { console.error(err); });
+						
+						let selectedInfo = movies[count+2];
+						selectedMovieEmbed(selectedInfo, message)
+					}else if (reaction.emoji.name == "4️⃣") {
+						await reaction.message.delete()
+							.then()
+							.catch(err => { console.error(err); });
+						
+						let selectedInfo = movies[count+3];
+						selectedMovieEmbed(selectedInfo, message)
+					}
+					return;
+				});
+			}
 		} else if (args[0] === "test") {
 
 			let embed2 = new MessageEmbed()
@@ -263,12 +276,12 @@ async function movieChoiceEmbed(movies, message, count) {
 		.setColor('#D733FF')
 		.setTitle('Choose movie')
 		.addFields({
-			name: movies[pagecount].title,
+			name: "1️⃣ "+movies[pagecount].title,
 			value: movies[pagecount].description,
 			inline: true,
 		},
 		{
-			name: movies[pagecount + 1].title,
+			name: "2️⃣ "+movies[pagecount + 1].title,
 			value: movies[pagecount + 1].description,
 			inline: true,
 		},
@@ -278,12 +291,12 @@ async function movieChoiceEmbed(movies, message, count) {
 			inline: false,
 		},
 		{
-			name: movies[pagecount + 2].title,
+			name: "3️⃣ "+movies[pagecount + 2].title,
 			value: movies[pagecount + 2].description,
 			inline: true,
 		},
 		{
-			name: movies[pagecount + 3].title,
+			name: "4️⃣ "+movies[pagecount + 3].title,
 			value: movies[pagecount + 3].description,
 			inline: true,
 		})
