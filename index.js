@@ -94,20 +94,20 @@ client.on('messageCreate', async message => {
 					value: horrorMovielist,
 					inline: true,
 				},
-				{
-					name: 'COMEDY',
-					value: comedyMovielist,
-					inline: true,
-				},
-				{
-					name: 'ACTION',
-					value: actionMovielist,
-					inline: true,
-				})
+					{
+						name: 'COMEDY',
+						value: comedyMovielist,
+						inline: true,
+					},
+					{
+						name: 'ACTION',
+						value: actionMovielist,
+						inline: true,
+					})
 				.setTimestamp(new Date())
 				.setFooter(text = "By Andrea Gafa'")
 
-			message.channel.send({embeds: [embed]})
+			message.channel.send({ embeds: [embed] })
 				.then(msg => {
 					setTimeout(() => msg.delete(), 300000)
 				})
@@ -158,29 +158,28 @@ client.on('messageCreate', async message => {
 				.catch(/*Your Error handling if the Message isn't returned, sent, etc.*/);
 		} else if (args[0] === "check") {
 			let movies = await httpsRequest.mainGetMovieData(args.slice(1).join(' '));
-			if (movies == "")
-			{
+			if (movies == "") {
 				message.channel.send("No results found")
 					.then(msg => {
 						setTimeout(() => msg.delete(), 100000)
 					})
 				return;
-			}else{
+			} else {
 				let count = 0;
 				if (movies.length % 4 !== 0) {
 					i = movies.length + 1;
 					b = { title: "N/A", description: "N/A" };
-	
+
 					while (movies.length % 4 !== 0) {
 						movies.push(b)
 						i++;
 					}
 				}
 				movieChoiceEmbed(movies, message, count);
-			
+
 				client.on("messageReactionAdd", async (reaction, user) => { // When a reaction is added
 					if (user.bot) return;
-			
+
 					if (reaction.emoji.name == "⏪") {
 						await reaction.message.delete()
 							.then()
@@ -193,110 +192,46 @@ client.on('messageCreate', async message => {
 						await reaction.message.delete()
 							.then()
 							.catch(err => { console.error(err); });
-						if (count < (movies.length-4)) {
+						if (count < (movies.length - 4)) {
 							count += 4;
 						}
 						movieChoiceEmbed(movies, message, count);
-					}else if (reaction.emoji.name == "❌") {
+					} else if (reaction.emoji.name == "❌") {
 						await reaction.message.delete()
 							.then()
 							.catch(err => { console.error(err); });
 						return;
-					}else if (reaction.emoji.name == "1️⃣") {
+					} else if (reaction.emoji.name == "1️⃣") {
 						await reaction.message.delete()
 							.then()
 							.catch(err => { console.error(err); });
 						let selectedInfo = movies[count];
 						selectedMovieEmbed(selectedInfo, message)
-					}else if (reaction.emoji.name == "2️⃣") {
+					} else if (reaction.emoji.name == "2️⃣") {
 						await reaction.message.delete()
 							.then()
 							.catch(err => { console.error(err); });
-						let selectedInfo = movies[count+1];
+						let selectedInfo = movies[count + 1];
 						selectedMovieEmbed(selectedInfo, message)
-					}else if (reaction.emoji.name == "3️⃣") {
+					} else if (reaction.emoji.name == "3️⃣") {
 						await reaction.message.delete()
 							.then()
 							.catch(err => { console.error(err); });
-						
-						let selectedInfo = movies[count+2];
+
+						let selectedInfo = movies[count + 2];
 						selectedMovieEmbed(selectedInfo, message)
-					}else if (reaction.emoji.name == "4️⃣") {
+					} else if (reaction.emoji.name == "4️⃣") {
 						await reaction.message.delete()
 							.then()
 							.catch(err => { console.error(err); });
-						
-						let selectedInfo = movies[count+3];
+
+						let selectedInfo = movies[count + 3];
 						selectedMovieEmbed(selectedInfo, message)
 					}
 					return;
 				});
 			}
-		} 
-	}else if (command === "amogus") {
-		pasta1 = "⣿⣿⣿⠟⢹⣶⣶⣝⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿ ⣿⣿⡟⢰⡌⠿⢿⣿⡾⢹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿ ⣿⣿⣿⢸⣿⣤⣒⣶⣾⣳⡻⣿⣿⣿⣿⡿⢛⣯⣭⣭⣭⣽⣻⣿⣿⣿ ⣿⣿⣿⢸⣿⣿⣿⣿⢿⡇⣶⡽⣿⠟⣡⣶⣾⣯⣭⣽⣟⡻⣿⣷⡽⣿ ⣿⣿⣿⠸⣿⣿⣿⣿⢇⠃⣟⣷⠃⢸⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣽ ⣿⣿⣿⣇⢻⣿⣿⣯⣕⠧⢿⢿⣇⢯⣝⣒⣛⣯⣭⣛⣛⣣⣿⣿⣿⡇ ⣿⣿⣿⣿⣌⢿⣿⣿⣿⣿⡘⣞⣿⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇ ⣿⣿⣿⣿⣿⣦⠻⠿⣿⣿⣷⠈⢞⡇⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇ ⣿⣿⣿⣿⣿⣿⣗⠄⢿⣿⣿⡆⡈⣽⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢻ ⣿⣿⣿⣿⡿⣻⣽⣿⣆⠹⣿⡇⠁⣿⡼⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⣾ ⣿⠿⣛⣽⣾⣿⣿⠿⠋⠄⢻⣷⣾⣿⣧⠟⣡⣾⣿⣿⣿⣿⣿⣿⡇⣿ ⢼⡟⢿⣿⡿⠋⠁⣀⡀⠄⠘⠊⣨⣽⠁⠰⣿⣿⣿⣿⣿⣿⣿⡍⠗⣿ ⡼⣿⠄⠄⠄⠄⣼⣿⡗⢠⣶⣿⣿⡇⠄⠄⣿⣿⣿⣿⣿⣿⣿⣇⢠⣿ ⣷⣝⠄⠄⢀⠄⢻⡟⠄⣿⣿⣿⣿⠃⠄⠄⢹⣿⣿⣿⣿⣿⣿⣿⢹⣿ ⣿⣿⣿⣿⣿⣧⣄⣁⡀⠙⢿⡿⠋⠄⣸⡆⠄⠻⣿⡿⠟⢛⣩⣝⣚⣿ ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⣤⣤⣤⣾⣿⣿⣄⠄⠄⠄⣴⣿⣿⣿⣇⣿ ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⣄⡀⠛⠿⣿⣫⣾⣿"
-		pasta2 = "⣿⣿⣿⣿⣿⣿⣿⣿⠿⠛⠋⠉⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠛⠿⣿⣿⣿\
-		⣿⣿⣿⣿⣿⣿⠏⠀⢠⣦⡀⣤⣠⡄⢠⠦⡄⣠⠤⠀⣤⠀⡆⣤⣶⡀⠀⠈⠻⣿\
-		⣿⣿⣿⣿⣿⣿⠀⠀⠟⠻⠃⠏⠉⠇⠸⠶⠋⠻⠾⠇⠙⠒⠃⠘⠾⠃⠀⠀⢀⣿\
-		⣿⣿⣿⣿⣿⣿⣷⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣠⣴⣿⣿\
-		⣿⣿⣿⣿⣿⣿⣿⠿⠿⠿⠿⠷⣶⣶⣶⣶⣶⡆⢀⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿\
-		⣿⣿⣿⣿⠟⠉⠀⠀⠒⠀⠀⠀⠀⠉⢻⣿⣿⣷⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿\
-		⣿⣿⣿⣿⠀⠀⠀⠦⣀⣶⡶⠀⢤⣠⣤⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿\
-		⣿⣿⣿⣿⣷⣤⣀⡲⠶⣶⣤⣔⣀⣤⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿\
-		⣿⣿⣿⣿⣿⠿⠿⠃⠈⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿\
-		⣿⣿⣿⠏⢀⠤⠄⠀⠀⢀⡈⢹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿\
-		⣿⣿⡟⠀⠸⠦⣠⠘⠁⢨⠃⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿\
-		⣿⣿⠃⠀⠑⠤⠤⠔⠚⢥⣤⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿\
-		⣿⡿⠀⠀⠀⣀⣀⡀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿\
-		⣿⡇⠀⠀⣰⣿⣿⣿⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿\
-		⣿⣧⣀⡀⠉⣻⣿⣧⣤⣤⣤⣤⣽⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿"
-		pasta3 = "⠀⠀⠀⠀⠀⢀⣴⡾⠿⠿⠿⠿⢶⣦⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\
-		⠀⠀⠀⠀⢠⣿⠁⠀⠀⠀⣀⣀⣀⣈⣻⣷⡄⠀⠀⠀⠀⠀⠀⠀⠀\
-		⠀⠀⠀⠀⣾⡇⠀⠀⣾⣟⠛⠋⠉⠉⠙⠛⢷⣄⠀⠀⠀⠀⠀⠀⠀\
-		⢀⣤⣴⣶⣿⠀⠀⢸⣿⣿⣧⠀⠀⠀⠀⢀⣀⢹⡆⠀⠀⠀⠀⠀⠀\
-		⢸⡏⠀⢸⣿⠀⠀⠀⢿⣿⣿⣷⣶⣶⣿⣿⣿⣿⠃⠀⠀⠀⠀⠀⠀\
-		⣼⡇⠀⢸⣿⠀⠀⠀⠈⠻⠿⣿⣿⠿⠿⠛⢻⡇⠀⠀⠀⠀⠀⠀⠀\
-		⣿⡇⠀⢸⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣼⣷⣶⣶⣶⣤⡀⠀⠀\
-		⣿⡇⠀⢸⣿⠀⠀⠀⠀⠀⠀⣀⣴⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⡀\
-		⢻⡇⠀⢸⣿⠀⠀⠀⠀⢀⣾⣿⣿⣿⣿⣿⣿⣿⡿⠿⣿⣿⣿⣿⡇\
-		⠈⠻⠷⠾⣿⠀⠀⠀⠀⣾⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⢸⣿⣿⣿⣇\
-		⠀⠀⠀⠀⣿⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⠃⠀⢸⣿⣿⣿⡿\
-		⠀⠀⠀⠀⢿⣧⣀⣠⣴⡿⠙⠛⠿⠿⠿⠿⠉⠀⠀⢠⣿⣿⣿⣿⠇\
-		⠀⠀⠀⠀⠀⢈⣩⣭⣥⣤⣤⣤⣤⣤⣤⣤⣤⣤⣶⣿⣿⣿⣿⠏⠀\
-		⠀⠀⠀⠀⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠋⠀⠀\
-		⠀⠀⠀⢸⣿⣿⣿⡟⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠋⠁⠀⠀⠀⠀\
-		⠀⠀⠀⢸⣿⣿⣿⣷⣄⣀⣀⣀⣀⣀⣀⣀⣀⣀⡀⠀⠀⠀⠀⠀⠀\
-		⠀⠀⠀⠀⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⡀⠀⠀⠀\
-		⠀⠀⠀⠀⠀⠈⠛⠿⠿⣿⣿⣿⣿⣿⠿⠿⢿⣿⣿⣿⣿⣿⡄⠀⠀\
-		⠀⠀⠀⠀⠀⠀⢀⣀⣀⣀⡀⠀⠀⠀⠀⠀⠀⢀⣹⣿⣿⣿⡇⠀⠀\
-		⠀⠀⠀⠀⠀⢰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠁⠀⠀\
-		⠀⠀⠀⠀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠛⠁⠀⠀⠀\
-		⠀⠀⠀⠀⣿⣿⣿⣿⠁⠀⠀⠀⠀⠀⠉⠉⠁⢤⣤⣤⣤⣤⣤⣤⡀\
-		⠀⠀⠀⠀⢿⣿⣿⣿⣷⣶⣶⣶⣶⣾⣿⣿⣿⣆⢻⣿⣿⣿⣿⣿⡇\
-		⠀⠀⠀⠀⠈⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⠻⣿⣿⣿⡿⠁\
-		⠀⠀⠀⠀⠀⠀⠈⠙⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠉⠀⠙⠛⠉⠀⠀"
-		pasta4 = "⡯⡯⡾⠝⠘⠀ ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢊⠘⡮⣣⠪⠢⡑⡌ ㅤ\
-		⠟⠝⠈⠀⠀⠀. ⠡⠀⠠⢈⠠⢐⢠⢂⢔⣐⢄⡂⢔⠀⡁⢉⠸⢨⢑⠕⡌ ㅤ ⠀\
-		⠀ ⡀⠁⠀⠀⠀⡀⢂⠡⠈⡔⣕⢮⣳⢯⣿⣻⣟⣯⣯⢷⣫⣆⡂ ⢐⠑⡌\
-		⢀⠠⠐⠈⠀⢀⢂⠢⡂⠕⡁⣝⢮⣳⢽⡽⣾⣻⣿⣯⡯⣟⣞⢾⢜⢆⠀⡀⠀⠪\
-		⣬⠂⠀⠀⢀⢂⢪⠨⢂⠥⣺⡪⣗⢗⣽⢽⡯⣿⣽⣷⢿⡽⡾⡽⣝⢎⠀⠀⠀⢡\
-		⣿⠀⠀⠀⢂⠢⢂⢥⢱⡹⣪⢞⡵⣻⡪⡯⡯⣟⡾⣿⣻⡽⣯⡻⣪⠧⠑⠀⠁⢐\
-		⣿⠀⠀⠀⠢⢑⠠⠑⠕⡝⡎⡗⡝⡎⣞⢽⡹⣕⢯⢻⠹⡹⢚⠝⡷⡽⡨⠀⠀⢔\
-		⣿⡯⠀⢈⠈⢄⠂⠂⠐⠀⠌⠠⢑⠱⡱⡱⡑⢔⠁⠀⡀⠐⠐⠐⡡⡹⣪⠀⠀⢘\
-		⣿⣽⠀⡀⡊⠀⠐⠨⠈⡁⠂⢈⠠⡱⡽⣷⡑⠁⠠⠑⠀⢉⢇⣤⢘⣪⢽⠀⢌⢎\
-		⣿⢾⠀⢌⠌⠀⡁⠢⠂⠐⡀⠀⢀⢳⢽⣽⡺⣨⢄⣑⢉⢃⢭⡲⣕⡭⣹⠠⢐⢗\
-		⣿⡗⠀⠢⠡⡱⡸⣔⢵⢱⢸⠈⠀⡪⣳⣳⢹⢜⡵⣱⢱⡱⣳⡹⣵⣻⢔⢅⢬⡷\
-		⣷⡇⡂⠡⡑⢕⢕⠕⡑⠡⢂⢊⢐⢕⡝⡮⡧⡳⣝⢴⡐⣁⠃⡫⡒⣕⢏⡮⣷⡟\
-		⣷⣻⣅⠑⢌⠢⠁⢐⠠⠑⡐⠐⠌⡪⠮⡫⠪⡪⡪⣺⢸⠰⠡⠠⠐⢱⠨⡪⡪⡰\
-		⣯⢷⣟⣇⡂⡂⡌⡀⠀⠁⡂⠅⠂⠀⡑⡄⢇⠇⢝⡨⡠⡁⢐⠠⢀⢪⡐⡜⡪⡊\
-		⣿⢽⡾⢹⡄⠕⡅⢇⠂⠑⣴⡬⣬⣬⣆⢮⣦⣷⣵⣷⡗⢃⢮⠱⡸⢰⢱⢸⢨⢌\
-		⣯⢯⣟⠸⣳⡅⠜⠔⡌⡐⠈⠻⠟⣿⢿⣿⣿⠿⡻⣃⠢⣱⡳⡱⡩⢢⠣⡃⠢⠁\
-		⡯⣟⣞⡇⡿⣽⡪⡘⡰⠨⢐⢀⠢⢢⢄⢤⣰⠼⡾⢕⢕⡵⣝⠎⢌⢪⠪⡘⡌⠀\
-		⡯⣳⠯⠚⢊⠡⡂⢂⠨⠊⠔⡑⠬⡸⣘⢬⢪⣪⡺⡼⣕⢯⢞⢕⢝⠎⢻⢼⣀⠀\
-		⠁⡂⠔⡁⡢⠣⢀⠢⠀⠅⠱⡐⡱⡘⡔⡕⡕⣲⡹⣎⡮⡏⡑⢜⢼⡱⢩⣗⣯⣟\
-		⢀⢂⢑⠀⡂⡃⠅⠊⢄⢑⠠⠑⢕⢕⢝⢮⢺⢕⢟⢮⢊⢢⢱⢄⠃⣇⣞⢞⣞⢾\
-		⢀⠢⡑⡀⢂⢊⠠⠁⡂⡐⠀⠅⡈⠪⠪⠪⠣⠫⠑⡁⢔⠕⣜⣜⢦⡰⡎⡯⡾⡽"
-		message.channel.send(pasta4);
+		}
 	}
 })
 
@@ -307,30 +242,30 @@ async function movieChoiceEmbed(movies, message, count) {
 		.setColor('#D733FF')
 		.setTitle('Choose movie')
 		.addFields({
-			name: "1️⃣ "+movies[pagecount].title,
+			name: "1️⃣ " + movies[pagecount].title,
 			value: movies[pagecount].description,
 			inline: true,
 		},
-		{
-			name: "2️⃣ "+movies[pagecount + 1].title,
-			value: movies[pagecount + 1].description,
-			inline: true,
-		},
-		{
-			name: '\u200b',
-			value: '\u200b',
-			inline: false,
-		},
-		{
-			name: "3️⃣ "+movies[pagecount + 2].title,
-			value: movies[pagecount + 2].description,
-			inline: true,
-		},
-		{
-			name: "4️⃣ "+movies[pagecount + 3].title,
-			value: movies[pagecount + 3].description,
-			inline: true,
-		})
+			{
+				name: "2️⃣ " + movies[pagecount + 1].title,
+				value: movies[pagecount + 1].description,
+				inline: true,
+			},
+			{
+				name: '\u200b',
+				value: '\u200b',
+				inline: false,
+			},
+			{
+				name: "3️⃣ " + movies[pagecount + 2].title,
+				value: movies[pagecount + 2].description,
+				inline: true,
+			},
+			{
+				name: "4️⃣ " + movies[pagecount + 3].title,
+				value: movies[pagecount + 3].description,
+				inline: true,
+			})
 		.setTimestamp(new Date())
 		.setFooter(text = "By Andrea Gafa'")
 
@@ -347,22 +282,22 @@ async function movieChoiceEmbed(movies, message, count) {
 		.catch();
 }
 
-async function selectedMovieEmbed(selectedInfo, message){
-	let movie = await httpsRequest.getMovieRating(selectedInfo.id);	
+async function selectedMovieEmbed(selectedInfo, message) {
+	let movie = await httpsRequest.getMovieRating(selectedInfo.id);
 
-	if(movie.fullTitle == "") 
+	if (movie.fullTitle == "")
 		movie.fullTitle = "N/A";
-	if(movie.imDb == "")
+	if (movie.imDb == "")
 		movie.imDb = "N/A"
-	if(movie.metacritic == "")
+	if (movie.metacritic == "")
 		movie.metacritic = "N/A"
-	if(movie.theMovieDb == "")
+	if (movie.theMovieDb == "")
 		movie.theMovieDb = "N/A"
-	if(movie.rottenTomatoes == "")
+	if (movie.rottenTomatoes == "")
 		movie.rottenTomatoes = "N/A"
-	if(movie.filmAffinity == "")
+	if (movie.filmAffinity == "")
 		movie.filmAffinity = "N/A"
-	if(selectedInfo.image == "")
+	if (selectedInfo.image == "")
 		selectedInfo.image = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png"
 
 	let embed = new MessageEmbed()
@@ -378,10 +313,10 @@ async function selectedMovieEmbed(selectedInfo, message){
 		.setFooter(text = "By Andrea Gafa'")
 
 	var mg = await message.channel.send({ embeds: [embed] })
-	.then(msg => {
-		setTimeout(() => msg.delete(), 300000)
-	})
-	.catch(/*Your Error handling if the Message isn't returned, sent, etc.*/);
+		.then(msg => {
+			setTimeout(() => msg.delete(), 300000)
+		})
+		.catch(/*Your Error handling if the Message isn't returned, sent, etc.*/);
 }
 
 function readjsonfile() {
@@ -423,7 +358,7 @@ async function embedmsg(category, movielist, message) {
 		.setTimestamp(new Date())
 		.setFooter(text = "By Andrea Gafa'")
 
-		var mg = await message.channel.send({ embeds: [embed] })
+	var mg = await message.channel.send({ embeds: [embed] })
 		.then(msg => {
 			setTimeout(() => msg.delete(), 300000)
 		})
